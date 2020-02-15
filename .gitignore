@@ -42,3 +42,6 @@ personalValidImages/
 # IPython
 profile_default/
 ipython_config.py
+
+# Python env
+.python-version
