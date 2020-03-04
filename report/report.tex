@@ -14,7 +14,7 @@
 \section{Definition} \label{s_definition}
 
 \subsection{Project Overview}
-Image Classification is an active research ﬁeld in multimedia. Applications of image classification are widely used in security, healthcare, entertainment and many more to face real world problems.\newline
+%Image Classification is an active research ﬁeld in multimedia. Applications of image classification are widely used in security, healthcare, entertainment and many more to face real world problems.\newline
 The goal of this project is to develop an image classifier to predict dog breeds and it is mainly created for entertainment purposes. However, serious research projects about animal classification exists. For example Trnovszky, Kamencay, Orjesek, Benco and Sykora published a paper where they created a Convolutional Neural Network (CNN) to propose the animal species from an images of an animal \cite{animal_rec}.\newline
 This projects is also one of options, given by Udacity, for a capstone project. It comes with a predefined problem statement and a Jupyter Notebook to complete. Udacity also provides the data of dog images and human images. The dataset for dog images is a custom dataset from Udacity. The images of human faces come from the LFW (Labeled Face in the Wild) \cite{lfw} dataset from the University of Massachusetts.
 
@@ -98,8 +98,20 @@ The bar chart \ref{breed_occurence} shows the occurences of each individual dog 
 
 \subsection{Algorithms and Techniques}
 \paragraph{Face Detection} One part of the problem is to detect humans. Therefore a detector for human faces is needed. OpenCV provides the Haar Cascade classifier \cite{haar_cascade}. The classifier is trained from images with an machine learning approach based on a cascade function, to detect objects in images \cite{opencv}. OpenVC provides three different pretrained models to detect human faces: FrontalFaceAlt, FrontalFaceAlt2, FrontalFaceDefault. The comparison result showed, that FrontalFaceAlt is the best pretrained model for our use case. The model has an accuracy of 100\% for human faces.
+\begin{figure}[h]
+    \centering
+    \includegraphics[scale=0.45]{./images/haar_cascades_results}
+    \caption{Accuracy comparison of all three Haar cascade models.}
+    \label{fig:haar_cascace_comp}
+\end{figure}
 
 \paragraph{Dog Detection} VGG-16 is a useful pretrained network to detect dogs. The VGG-16 network is recommended by the creators of the provided notebook. It is also possible to use other pretrained networks like Inception-v3 or ResNet-50. I decided to focus on VGG-16 for the dog detection, because in Transfer Learning, the ResNet-50 network will be used anyway.
+\begin{figure}[h]
+    \centering
+    \includegraphics[scale=0.45]{./images/vgg16_dog_detector}
+    \caption{Output of the VGG-16 model accuracy on the training datasets.}
+    \label{fig:dog_detection_acc}
+\end{figure}
 
 \paragraph{Dog Classifier} This project has two mandatory tasks: Create a CNN from scratch and create a CNN using Transfer Learning. To create a CNN from scratch, the framework provided by the notebook is PyTorch. PyTorch is a machine learning library developed by facebook.\newline
 For Transfer Learning I have decided to use the ResNet-50 pretrained network. The ResNet-50 network is trained with 152 layers on the ImageNet dataset and has won the 1st price on the ILSVRC 2015 classification task. Therefore, the ResNet-50 is the best fit for the problem of this project.
@@ -111,7 +123,7 @@ There are no requirements about the dog detector or the human face detector. I h
 %############
 \section{Methodology} \label{s_methodology}
 
-\subsection{Data Preprocessing}
+\subsection{Data Preprocessing} \label{su_preprocessing}
 The ResNet-50 network is trained with images of a 224x224 dimension. Therefore I decided to use that image size for the network I have to create from scratch. I will also use the same values for image normalization parameters like torchvision. The torchvision normalization parameters are:
 \begin{itemize}
     \item \textbf{mean:} [0.485, 0.456, 0.406]
@@ -132,6 +144,19 @@ The training data will be augmented, because it will increase the diversity of t
 \end{enumerate}
 
 \subsection{Implementation}
+The first task  was to split the datasets into train, valid and test data. The DataLoader class from PyTorch is a good solution to handle this case. As mentioned in \ref{s_analysis} the dataset has already been split into train, valid and test, therefore it was easy to create three custom DataLoader and load the specific files. How the images get preprocessed is explained in \ref{su_preprocessing}.\newline
+
+The second task was to create a CNN from scratch. To accomplish that, the notebook provides the machine learning library PyTorch to handle this task.\newline
+The CNN has three convolutional layers, the first two layers have a stride of 2 to downsize the input size by two. After each convolutional layer, the output will be normalized by a batch normalization layer. After that, the ReLU activation function will be applied to the output. A max. pooling layer will downsize the output of each convolutional layer by two, after batch normalization and ReLU activation. To prevent overfitting the CNN has a dropout layer, the probability that an element will be zero-ed is 0.3. To create the output of the CNN, two fully connected linear layers will produce the 133-dim output.\newline
+For training, the Cross Entropy loss function and the Stochastic Gradient Descent (SGD) criterion have been used.
+\begin{figure}[h]
+    \centering
+    \includegraphics[scale=0.45]{./images/model_scratch_architecture}
+    \caption{Network architecture.}
+    \label{fig:scratch_network_architecture}
+\end{figure}
+
+For the transfer learning implementation I have decided to use the ResNet-50 network, as mentioned in ##. The ResNet-50 is a pretrained network, so no architecture has to be defined by me. The only thing, that was necessary to complete the task, was to train the network with our train dataset. For training, the same loss function and criterion have been used.
 
 \subsection{Refinement}
 
