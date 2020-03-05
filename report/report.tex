@@ -96,7 +96,7 @@ The dog images dataset has already been split into test, train, and valid sets. 
 \end{figure}
 The bar chart \ref{breed_occurence} shows the occurences of each individual dog breed in the train dataset. As the bar shows, the breeds are not evenly distributed. Therefore the CNNs of this project, will predict dog breeds with a higher occurence (e.g. Alaskan Malamute), better than breeds with a lower occurence (e.g. Norwegian Buhund).
 
-\subsection{Algorithms and Techniques}
+\subsection{Algorithms and Techniques} \label{su_alg_and_techn}
 \paragraph{Face Detection} One part of the problem is to detect humans. Therefore a detector for human faces is needed. OpenCV provides the Haar Cascade classifier \cite{haar_cascade}. The classifier is trained from images with an machine learning approach based on a cascade function, to detect objects in images \cite{opencv}. OpenVC provides three different pretrained models to detect human faces: FrontalFaceAlt, FrontalFaceAlt2, FrontalFaceDefault. The comparison result showed, that FrontalFaceAlt is the best pretrained model for our use case. The model has an accuracy of 100\% for human faces.
 \begin{figure}[h]
     \centering
@@ -143,7 +143,7 @@ The training data will be augmented, because it will increase the diversity of t
 	\item Normalize with torchvision mean/std values
 \end{enumerate}
 
-\subsection{Implementation}
+\subsection{Implementation} \label{su_implementation}
 The first task  was to split the datasets into train, valid and test data. The DataLoader class from PyTorch is a good solution to handle this case. As mentioned in \ref{s_analysis} the dataset has already been split into train, valid and test, therefore it was easy to create three custom DataLoader and load the specific files. How the images get preprocessed is explained in \ref{su_preprocessing}.\newline
 
 The second task was to create a CNN from scratch. To accomplish that, the notebook provides the machine learning library PyTorch to handle this task.\newline
@@ -152,18 +152,50 @@ For training, the Cross Entropy loss function and the Stochastic Gradient Descen
 \begin{figure}[h]
     \centering
     \includegraphics[scale=0.45]{./images/model_scratch_architecture}
-    \caption{Network architecture.}
+    \caption{CNN architecture.}
     \label{fig:scratch_network_architecture}
 \end{figure}
 
-For the transfer learning implementation I have decided to use the ResNet-50 network, as mentioned in ##. The ResNet-50 is a pretrained network, so no architecture has to be defined by me. The only thing, that was necessary to complete the task, was to train the network with our train dataset. For training, the same loss function and criterion have been used.
+For the transfer learning implementation I have decided to use the ResNet-50 network, as mentioned in ##. ResNet-50 is a pretrained network, so no architecture has to be defined by myself. The only thing that was necessary to complete the task, was to train the network with our train dataset. For training, the same loss function and criterion have been used.
 
 \subsection{Refinement}
+%To create a CNN from scratch I tried a couple architecture before I got the final architecture. First I started with five convolutional layers and no batch normalization layer. The accuracy of that architecture was about 20\%. After I did some research about image classification CNNs I came up with the architecture explained in \ref{su_implementation}.\newline
+
+To come up with a good number of epochs, I updated the train function to save and return a history of the loss and validation accuracy metric. At first, I started to train the CNN with 50 epochs. The visualization makes clear, that after the 40th epoch, no significant improvement has been made. The validation accuracy of the model will go up and down in range of 0.25 and 0.28. Also the validation loss stays between 2.9 and 3.0. Therefore I have decided to train the CNN with 40 epochs to prevent overfitting.
+\begin{figure}[h]
+    \centering
+    \includegraphics[scale=0.45]{./images/50_epochs}
+    \caption{Accuracy and loss history of the CNN training.}
+    \label{fig:cnn_train_metrics}
+\end{figure}
 
 %############
 \section{Results} \label{s_results}
 
 \subsection{Model Evaluation and Validation}
+The model will be trained for several epochs. In each epoch the trained model gets validated against the validation dataset. The model with the lowest validation loss value will be saved. After training, the accuracy for the saved model gets determined. For testing the test dataset will be used.\newline
+During this project, two networks will be trained, a network made from scratch and a pretrained network for transfer learning.
+
+\subsubsection{Scratch CNN}
+The network I had to create from scratch has a final accuracy of 27\% and a loss value of 2.96. Therefore the model hits the benchmark requirements.\newline
+An accuracy of 27\% is not a good result for an image classification model. The classification report makes clear that the network is not able to detect 31 breeds out of 133. All of these 33 breeds have a precision, recall and F1-score value of 0. Because of these results, I decided to use a pretrained network for the transfer learning task.
+\begin{figure}[h]
+    \centering
+    \includegraphics[scale=0.45]{./images/scratch_classification_report}
+    \caption{Classification metrics results of the scratch CNN for the first fifteen dog breeds.}
+    \label{fig:scratch_cnn_class_rep}
+\end{figure}
+
+
+\subsubsection{Transfer Learning Pretrained CNN}
+For transfer learning I have decided to use the ResNet-50 network, this is described in \ref{su_alg_and_techn}. The pretrained model has reach a test accuracy of 81\% and a test loss value of 1.02. Therefore the model reaches the benchmark requirements.\newline
+The model shows significant improvements in the classification report. There is no breed with a precision, recall or F1-score value of 0.
+\begin{figure}[h]
+    \centering
+    \includegraphics[scale=0.45]{./images/transfer_classification_report}
+    \caption{Classification metrics results of the ResNet-50 for the first fifteen dog breeds.}
+    \label{fig:scratch_cnn_class_rep}
+\end{figure}
 
 \subsection{Justification}
 
