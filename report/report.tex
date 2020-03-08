@@ -14,7 +14,7 @@
 \section{Definition} \label{s_definition}
 
 \subsection{Project Overview} \label{su_project_overview}
-Image classification is an active research field in multimedia. Applications of image classification are widely used in security, healthcare, entertainment and many more to face real world problems.
+Image classification is an active research field in multimedia. Applications of image classification are widely used in security, healthcare, entertainment and many more to face real world problems.\newline
 The goal of this project is to develop an image classifier to predict dog breeds and it is mainly created for entertainment purposes. However, serious research projects about animal classification exists. For example Trnovszky, Kamencay, Orjesek, Benco and Sykora published a paper where they created a Convolutional Neural Network (CNN) to propose the animal species from an images of an animal \cite{animal_rec}.\newline
 This projects is also one of the options, given by Udacity, for a capstone project. It comes with a predefined problem statement and a Jupyter Notebook to complete. Udacity also provides the data of dog images and human images. The dataset for dog images is a custom dataset from Udacity. The images of human faces come from the LFW (Labeled Face in the Wild) \cite{lfw} dataset from the University of Massachusetts.
 
@@ -79,7 +79,7 @@ F1 Score = 2 * Precision * \frac{Recall}{Precision + Recall}
 \section{Analysis} \label{s_analysis}
 
 \subsection{Data Exploration} \label{su_data_expl}
-The dog images dataset has already been split into test, train, and valid sets. In total the dataset contains 8351 image files of 133 unique dog breeds. The images of the Udacity dog dataset have different dimensions, therefore the images have to be resized, which is described in detail in section \ref{su_preprocessing}. The LFW dataset contains 13234 images of 5749 unique individuals. Images in the LFW dataset have a dimension of 250x250 pixels.
+The dog images dataset has already been split into test, train, and valid sets. In total the dataset contains 8351 image files of 133 unique dog breeds. The images of the Udacity dog dataset have different dimensions, therefore the images have to be resized, which is described in detail in section \ref{su_preprocessing}. The LFW dataset contains 13234 images of 5749 unique individuals. Images in the LFW dataset have a dimension of 250x250 pixels.\newpage
 
 \begin{figure}[h]
     \centering
@@ -87,6 +87,7 @@ The dog images dataset has already been split into test, train, and valid sets. 
     \caption{Example images from the datasets. The first images shows the Akita breed, the second image shows the actor Aaron Eckhart.}
     \label{fig:dataset_example}
 \end{figure}
+\newpage
 
 \subsection{Exploratory Visualization} \label{su_expl_vis}
 \begin{figure}[H]
