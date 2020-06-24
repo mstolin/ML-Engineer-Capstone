@@ -14,7 +14,7 @@ To run this project you need Python3 and Anaconda installed.
 
 ```
 # Create environment
-$ conda create env -f env.yml
+$ conda env create -f env.yml
 
 # start jupyter
 $ jupyter notebook
